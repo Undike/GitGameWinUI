@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GitGameWinUi (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GitGameWinUi (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
