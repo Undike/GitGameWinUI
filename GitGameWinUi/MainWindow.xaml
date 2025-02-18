@@ -8,7 +8,64 @@
     mc:Ignorable="d"
     Title="GitGameWinUi">
 
-    <Grid Background="LightGray" Loaded="Grid_Loaded">
+    <Grid x:Name="RootGrid" Background="LightGray" Loaded="Grid_Loaded">
+        <Grid.Resources>
+            <Storyboard x:Key="FadeOutStoryboard">
+                <DoubleAnimation Storyboard.TargetName="ResumedMessageContainer" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1.5"/>
+            </Storyboard>
+
+            <Style TargetType="TextBox" x:Key="TextBoxInput">
+                <Setter Property="Background" Value="DarkGray"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="Black" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Focused">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="Black" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                To="DarkGray" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border x:Name="BorderElement"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="20">
+                                    <ScrollViewer x:Name="ContentElement"
+                                                  Padding="{TemplateBinding Padding}"
+                                                  HorizontalScrollMode="Disabled"
+                                                  VerticalScrollMode="Auto"
+                                                  ZoomMode="Disabled"
+                                                  IsTabStop="False"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+
         <!-- ScrollViewer и Canvas -->
         <ScrollViewer x:Name="SceneScrollViewer"
                       PointerPressed="SceneScrollViewer_PointerPressed"
@@ -32,115 +89,16 @@
 
         <!-- Элементы UI -->
         <Grid>
-            <Grid.Resources>
-                <Storyboard x:Name="FadeOutStoryboard">
-                    <DoubleAnimation Storyboard.TargetName="ResumedMessage" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1.5"/>
-                </Storyboard>
-
-                <Style TargetType="TextBox" x:Key="TextBoxInput">
-                    <Setter Property="Background" Value="DarkGray"/>
-                    <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TextBox">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="PointerOver">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                    To="Black" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Focused">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                    To="Black" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Pressed">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                    To="DarkGray" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Border x:Name="BorderElement"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="20">
-                                        <ScrollViewer x:Name="ContentElement"
-                                                      Padding="{TemplateBinding Padding}"
-                                                      HorizontalScrollMode="Disabled"
-                                                      VerticalScrollMode="Auto"
-                                                      ZoomMode="Disabled"
-                                                      IsTabStop="False"/>
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-
-                <Style TargetType="TextBox" x:Key="TextBoxLog">
-                    <Setter Property="Background" Value="DarkGray"/>
-                    <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TextBox">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="PointerOver">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
-                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                         To="Gray" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Focused">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
-                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                         To="Gray" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Pressed">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
-                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                         To="DarkGray" Duration="0:0:0.2"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Border x:Name="BorderElement"
-                                 Background="{TemplateBinding Background}"
-                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                 CornerRadius="20">
-                                        <ScrollViewer x:Name="ContentElement"
-                                           Padding="{TemplateBinding Padding}"
-                                           HorizontalScrollMode="Disabled"
-                                           VerticalScrollMode="Auto"
-                                           ZoomMode="Disabled"
-                                           IsTabStop="False"/>
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Grid.Resources>
-
-            <TextBlock x:Name="ResumedMessage" Text="Resumed" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Foreground="DarkGray"/>
+            <!-- Увеличиваем Border для текста "Resumed" -->
+            <Border x:Name="ResumedMessageContainer" 
+                    Background="Gray" 
+                    CornerRadius="20" 
+                    Padding="20" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Opacity="0">
+                <TextBlock x:Name="ResumedMessage" Text="Resumed" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" Foreground="White"/>
+            </Border>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="510" Height="600" Margin="0,0,0,15">
                 <TextBox x:Name="InputTextBox"

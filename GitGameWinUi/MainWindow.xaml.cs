@@ -93,15 +93,18 @@ namespace GitGameWinUi
             if (result == ContentDialogResult.Primary)
             {
                 // ѕоказываем сообщение "Resumed" и запускаем анимацию затухани€
-                ResumedMessage.Visibility = Visibility.Visible;
-                ResumedMessage.Opacity = 1;
+                ResumedMessageContainer.Opacity = 1;
 
-                Storyboard fadeOutStoryboard = (Storyboard)((FrameworkElement)this.Content).Resources["FadeOutStoryboard"];
-                fadeOutStoryboard.Completed += (s, e) =>
+                // ѕолучаем Storyboard из ресурсов корневого Grid
+                var rootGrid = (Grid)this.Content;
+                if (rootGrid.Resources["FadeOutStoryboard"] is Storyboard fadeOutStoryboard)
                 {
-                    ResumedMessage.Visibility = Visibility.Collapsed;
-                };
-                fadeOutStoryboard.Begin();
+                    fadeOutStoryboard.Completed += (s, e) =>
+                    {
+                        ResumedMessageContainer.Opacity = 0;
+                    };
+                    fadeOutStoryboard.Begin();
+                }
             }
             else if (result == ContentDialogResult.Secondary)
             {
@@ -109,6 +112,9 @@ namespace GitGameWinUi
                 Application.Current.Exit();
             }
         }
+
+
+
         #endregion
 
         #region ќбработка текстового пол€
