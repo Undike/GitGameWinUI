@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="GitGameWinUi.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,7 +8,161 @@
     mc:Ignorable="d"
     Title="GitGameWinUi">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid Background="LightGray" Loaded="Grid_Loaded">
+        <!-- ScrollViewer и Canvas -->
+        <ScrollViewer x:Name="SceneScrollViewer"
+                      PointerPressed="SceneScrollViewer_PointerPressed"
+                      PointerMoved="SceneScrollViewer_PointerMoved"
+                      PointerReleased="SceneScrollViewer_PointerReleased"
+                      PointerWheelChanged="SceneScrollViewer_PointerWheelChanged"
+                      KeyUp="SceneScrollViewer_KeyUp"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      Width="1200"
+                      Height="800"
+                      Background="White"
+                      MinZoomFactor="0.75"
+                      MaxZoomFactor="1.5">
+            <Canvas x:Name="SceneCanvas" Width="2000" Height="2000" Background="LightBlue"
+                    PointerPressed="SceneCanvas_PointerPressed">
+                <!-- Сетка нарисована на GridCanvas -->
+                <Canvas x:Name="GridCanvas" Width="2000" Height="2000" Background="Transparent" Loaded="GridCanvas_Loaded"/>
+            </Canvas>
+        </ScrollViewer>
+
+        <!-- Элементы UI -->
+        <Grid>
+            <Grid.Resources>
+                <Storyboard x:Name="FadeOutStoryboard">
+                    <DoubleAnimation Storyboard.TargetName="ResumedMessage" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1.5"/>
+                </Storyboard>
+
+                <Style TargetType="TextBox" x:Key="TextBoxInput">
+                    <Setter Property="Background" Value="DarkGray"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Grid>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal"/>
+                                            <VisualState x:Name="PointerOver">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="Black" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Focused">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="Black" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="DarkGray" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Border x:Name="BorderElement"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="20">
+                                        <ScrollViewer x:Name="ContentElement"
+                                                      Padding="{TemplateBinding Padding}"
+                                                      HorizontalScrollMode="Disabled"
+                                                      VerticalScrollMode="Auto"
+                                                      ZoomMode="Disabled"
+                                                      IsTabStop="False"/>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style TargetType="TextBox" x:Key="TextBoxLog">
+                    <Setter Property="Background" Value="DarkGray"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TextBox">
+                                <Grid>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal"/>
+                                            <VisualState x:Name="PointerOver">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                         To="Gray" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Focused">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                         To="Gray" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="BorderElement"
+                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                         To="DarkGray" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Border x:Name="BorderElement"
+                                 Background="{TemplateBinding Background}"
+                                 BorderBrush="{TemplateBinding BorderBrush}"
+                                 BorderThickness="{TemplateBinding BorderThickness}"
+                                 CornerRadius="20">
+                                        <ScrollViewer x:Name="ContentElement"
+                                           Padding="{TemplateBinding Padding}"
+                                           HorizontalScrollMode="Disabled"
+                                           VerticalScrollMode="Auto"
+                                           ZoomMode="Disabled"
+                                           IsTabStop="False"/>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+
+            <TextBlock x:Name="ResumedMessage" Text="Resumed" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Foreground="DarkGray"/>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="510" Height="600" Margin="0,0,0,15">
+                <TextBox x:Name="InputTextBox"
+                         Width="450"
+                         Height="90"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         PlaceholderText="Введите текст здесь..."
+                         Style="{StaticResource TextBoxInput}"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Bottom"
+                         TextChanged="InputTextBox_TextChanged" />
+                <Button Width="50" Height="40" Margin="0,0,0,40" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="SendFromInputToLog" Background="DarkGray">
+                    <FontIcon Glyph="&#xE110;" />
+                </Button>
+            </StackPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="500" Height="550" Margin="15,0,0,15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Opacity="0.8">
+                <StackPanel x:Name="OutputStackPanel" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <!-- Здесь будут добавляться новые элементы -->
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
 </Window>
